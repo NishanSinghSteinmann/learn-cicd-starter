@@ -21,8 +21,10 @@ jobs:
       - name: Install Goose
         run: go install github.com/pressly/goose/v3/cmd/goose@latest
 
+      - name: Run Database Migrations
+        run: goose up
         env:
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - id: auth
         uses: google-github-actions/auth@v2
@@ -35,7 +37,7 @@ jobs:
       - name: Use gcloud CLI
         run: gcloud info
 
-      - name: Push to Google CLoud
+      - name: Push Image to Google CLoud
         run: gcloud builds submit --tag us-central1-docker.pkg.dev/notely-new-3242342/notely-ar-repo/notely:latest
 
       - name: Deploy to Cloud Run
